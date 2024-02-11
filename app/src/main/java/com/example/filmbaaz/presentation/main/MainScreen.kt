@@ -22,6 +22,7 @@ import com.example.filmbaaz.library.designsystem.base.BaseRoute
 import com.example.filmbaaz.navigation.Destinations
 import com.example.filmbaaz.navigation.NetroNavHost
 import com.example.filmbaaz.presentation.components.CustomSnackbar
+import com.example.filmbaaz.ui.theme.FilmBaazTheme
 
 @Composable
 fun MainScreen() {
@@ -39,6 +40,7 @@ fun MainScreen() {
             MainTopBar()
 
         },
+        containerColor = FilmBaazTheme.colors.background
     ) { paddingValues ->
         BaseRoute{
             NetroNavHost(

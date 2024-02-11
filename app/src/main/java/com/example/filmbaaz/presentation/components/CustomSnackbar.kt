@@ -11,12 +11,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.filmbaaz.ui.theme.FilmBaazTheme
 
@@ -26,7 +23,7 @@ fun CustomSnackbar(
         .fillMaxWidth()
         .padding(horizontal = 16.dp, vertical = 8.dp),
     message: String,
-    containerColor: Color = FilmBaazTheme.colors.primary_282E3D
+    containerColor: Color = FilmBaazTheme.colors.background
 ) {
 
     Snackbar(
@@ -35,17 +32,13 @@ fun CustomSnackbar(
         containerColor = containerColor,
         shape = RoundedCornerShape(5.dp)
     ) {
-        CompositionLocalProvider(
-            LocalLayoutDirection provides LayoutDirection.Rtl
-        ) {
-            Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = message,
-                    style = FilmBaazTheme.typography.subtitle3,
-                    color = FilmBaazTheme.colors.secondary_F95738
-                )
-            }
+        Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = message,
+                style = FilmBaazTheme.typography.subtitle3,
+                color = FilmBaazTheme.colors.movieTitle
+            )
         }
     }
 }
