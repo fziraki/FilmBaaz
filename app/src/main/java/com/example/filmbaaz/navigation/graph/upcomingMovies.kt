@@ -7,7 +7,8 @@ import com.example.filmbaaz.navigation.Destinations
 import com.example.filmbaaz.presentation.upcomingList.UpcomingMoviesScreen
 
 fun NavGraphBuilder.upcomingMovies(
-    navController: NavController
+    navController: NavController,
+    onLoading: (Boolean) -> Unit
 ) {
     composable(
         route = Destinations.UpcomingMoviesScreen.route
@@ -15,7 +16,8 @@ fun NavGraphBuilder.upcomingMovies(
         UpcomingMoviesScreen(
             onBackPressed = {
                 navController.navigateUp()
-            }
+            },
+            onLoading = onLoading
         )
     }
 }

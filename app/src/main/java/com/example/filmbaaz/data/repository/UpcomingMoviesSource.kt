@@ -9,12 +9,12 @@ import java.io.IOException
 import javax.inject.Inject
 
 class UpcomingMoviesSource @Inject constructor(
-    private val moviesApi: MoviesApi
+    private val moviesApi: MoviesApi,
 ): PagingSource<Int, Movie>() {
 
     companion object {
         const val INITIAL_PAGE = 1
-        const val PAGE_SIZE = 10
+        const val PAGE_SIZE = 9
         const val PREFETCH_DISTANCE = 1
     }
 
