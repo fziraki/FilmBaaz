@@ -12,6 +12,9 @@ private val red_FF3D00 = Color(0xFFFF3D00)
 private val red_EB5757 = Color(0xFFEB5757)
 private val gray_44464E = Color(0xFF44464E)
 private val black_191A1F = Color(0xFF191A1F)
+private val blue_1C3051 = Color(0xFF1C3051)
+private val blue_7E91B7 = Color(0xFF7E91B7)
+
 interface ColorVariant {
     val light: Color
     val dark: Color
@@ -23,6 +26,22 @@ enum class DefaultColorsVariant : ColorVariant {
         override val light: Color = white
         override val dark: Color = black
     },
+
+    OnSurface {
+        override val light: Color = black
+        override val dark: Color = white
+    },
+
+    OnSurfaceVariant {
+        override val light: Color = blue_7E91B7
+        override val dark: Color = blue_7E91B7
+    },
+
+    OnSurfaceFixed {
+        override val light: Color = white
+        override val dark: Color = white
+    },
+
 
     MovieTitle {
         override val light: Color = black
@@ -52,6 +71,11 @@ enum class DefaultColorsVariant : ColorVariant {
     ButtonBackground {
         override val light: Color = black_191A1F
         override val dark: Color = black_191A1F
+    },
+
+    RetryButtonBackground {
+        override val light: Color = blue_1C3051
+        override val dark: Color = blue_1C3051
     }
 
 }
@@ -65,6 +89,10 @@ data class Colors(
     val redAction: Color,
     val buttonBorder: Color,
     val buttonBackground: Color,
+    val retryButtonBackground: Color,
+    val onSurface: Color,
+    val onSurfaceVariant: Color,
+    val onSurfaceFixed: Color,
     val isLight: Boolean
 )
 
@@ -77,6 +105,10 @@ object DefaultColors {
         redAction = DefaultColorsVariant.RedAction.light,
         buttonBorder = DefaultColorsVariant.ButtonBorder.light,
         buttonBackground = DefaultColorsVariant.ButtonBackground.light,
+        retryButtonBackground = DefaultColorsVariant.RetryButtonBackground.light,
+        onSurface = DefaultColorsVariant.OnSurface.light,
+        onSurfaceVariant = DefaultColorsVariant.OnSurfaceVariant.light,
+        onSurfaceFixed = DefaultColorsVariant.OnSurfaceFixed.light,
         isLight = true
     )
 
@@ -88,6 +120,10 @@ object DefaultColors {
         redAction = DefaultColorsVariant.RedAction.dark,
         buttonBorder = DefaultColorsVariant.ButtonBorder.dark,
         buttonBackground = DefaultColorsVariant.ButtonBackground.dark,
+        retryButtonBackground = DefaultColorsVariant.RetryButtonBackground.dark,
+        onSurface = DefaultColorsVariant.OnSurface.dark,
+        onSurfaceVariant = DefaultColorsVariant.OnSurfaceVariant.dark,
+        onSurfaceFixed = DefaultColorsVariant.OnSurfaceFixed.dark,
         isLight = false
     )
 }

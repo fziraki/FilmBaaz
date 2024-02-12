@@ -2,7 +2,7 @@
     <string name="app_name">FilmBaaz</string>
     <string name="discover">Discover</string>
     <string name="try_again">Try Again</string>
-
+    <string name="retry">Retry</string>
     <string name="bad_request">bad request</string>
     <string name="forbidden">forbidden</string>
     <string name="unauthorized">unauthorized</string>
@@ -10,5 +10,7 @@
     <string name="not_found">not found</string>
     <string name="service_unavailable">service unavailable</string>
     <string name="unknown">unknown</string>
+    <string name="connection_glitch">Connection glitch</string>
+    <string name="connection_glitch_desc">Seems like there\'s an internet\n connection problem.</string>
 
 </resources>

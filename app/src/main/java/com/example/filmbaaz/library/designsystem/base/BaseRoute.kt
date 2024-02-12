@@ -10,15 +10,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.filmbaaz.presentation.components.LoadingBar
+import com.example.filmbaaz.presentation.components.NoConnectionError
 import com.example.filmbaaz.ui.theme.FilmBaazTheme
 
 @Composable
 fun BaseRoute(
     isLoading: Boolean,
+    isGlitching: Boolean,
+    onRetry: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     BaseScreen(
         isLoading = isLoading,
+        isGlitching = isGlitching,
+        onRetry = onRetry,
         content = content
     )
 }
@@ -26,9 +31,10 @@ fun BaseRoute(
 @Composable
 private fun BaseScreen(
     isLoading: Boolean,
+    isGlitching: Boolean,
+    onRetry: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -44,6 +50,16 @@ private fun BaseScreen(
             LoadingBar(modifier = Modifier
                 .fillMaxSize()
                 .background(FilmBaazTheme.colors.background))
+        }
+
+        AnimatedVisibility(
+            visible = isGlitching,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            NoConnectionError(
+                onRetry = onRetry
+            )
         }
     }
 

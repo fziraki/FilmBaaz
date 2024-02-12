@@ -14,6 +14,8 @@ fun FilmBaazNavHost(
     startDestination: String,
     modifier: Modifier,
     onLoading: (Boolean) -> Unit,
+    onGlitch: (Boolean) -> Unit,
+    isRetry: Boolean,
 ) {
     NavHost(
         navController = navController,
@@ -25,7 +27,7 @@ fun FilmBaazNavHost(
         popExitTransition = { ExitTransition.None },
     ) {
 
-        upcomingMovies(navController, onLoading)
+        upcomingMovies(navController, onLoading, onGlitch, isRetry)
 
     }
 }

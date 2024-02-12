@@ -63,12 +63,25 @@ import kotlinx.coroutines.launch
 fun UpcomingMoviesScreen(
     onBackPressed: () -> Unit,
     onLoading: (Boolean) -> Unit,
+    onGlitch: (Boolean) -> Unit,
+    isRetry: Boolean,
     viewModel: UpcomingMoviesViewModel = hiltViewModel()
 ){
 
     val lazyPagingUpcomingMovies = viewModel.upcomingMoviesPagingFlow.collectAsLazyPagingItems()
     val message = viewModel.snackBarMessage
+    val glitch = viewModel.glitchError
 
+    LaunchedEffect(Unit) {
+        glitch.collect {
+            onGlitch(it)
+        }
+    }
+    val retry by remember { mutableStateOf(isRetry) }
+
+    if (retry){
+        viewModel.invalidateSource()
+    }
 
     UpComingMoviesComponent(
         message,
@@ -86,6 +99,7 @@ fun UpcomingMoviesScreen(
 
 
 }
+
 
 @Composable
 fun UpComingMoviesComponent(
@@ -160,6 +174,10 @@ fun UpComingMoviesComponent(
 
                 if (lazyPagingUpcomingMovies.loadState.source.append is LoadState.Error) {
                     onError((lazyPagingUpcomingMovies.loadState.source.append as LoadState.Error).error)
+                }
+
+                if (lazyPagingUpcomingMovies.loadState.source.refresh is LoadState.Error) {
+                    onError((lazyPagingUpcomingMovies.loadState.source.refresh as LoadState.Error).error)
                 }
 
                 if(lazyPagingUpcomingMovies.loadState.source.refresh is LoadState.Loading &&
@@ -251,11 +269,9 @@ fun Anim(visible: Boolean){
     val width by animateDpAsState(if (visible) 38.dp else 79.dp)
     val height by animateDpAsState(if (visible) 41.dp else 88.dp)
 
-    Log.d("tagg","location ${arrowLocation.x} ${arrowLocation.y}")
-
         Image(
             painterResource(R.drawable.logo),
-            contentDescription = "Just a better solution to the problem",
+            contentDescription = "Bazaar Logo",
             modifier = Modifier
                 .size(width, height)
                 .offset(arrowLocation.x.dp, arrowLocation.y.dp)
