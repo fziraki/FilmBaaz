@@ -1,14 +1,8 @@
 package com.example.filmbaaz.presentation.upcomingList
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateOffsetAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,9 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -33,13 +25,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -65,14 +53,17 @@ fun UpcomingMoviesScreen(
     onLoading: (Boolean) -> Unit,
     onGlitch: (Boolean) -> Unit,
     isRetry: Boolean,
+    title: (String) -> Unit,
     viewModel: UpcomingMoviesViewModel = hiltViewModel()
 ){
 
     val lazyPagingUpcomingMovies = viewModel.upcomingMoviesPagingFlow.collectAsLazyPagingItems()
     val message = viewModel.snackBarMessage
     val glitch = viewModel.glitchError
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        title(UiText.StringResource(R.string.discover).asString(context))
         glitch.collect {
             onGlitch(it)
         }
@@ -115,10 +106,7 @@ fun UpComingMoviesComponent(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var visible by remember { mutableStateOf(false) }
-
     LaunchedEffect(Unit) {
-        visible = true
         message.collect {
             coroutineScope.launch {
                 snackbarHostState.showSnackbar(
@@ -135,9 +123,6 @@ fun UpComingMoviesComponent(
                 onTryAgain = onTryAgain
             )
         } },
-        topBar = {
-            Header()
-        },
         bottomBar = {
             Box(modifier = Modifier
                 .background(FilmBaazTheme.colors.background)
@@ -207,12 +192,6 @@ fun UpComingMoviesComponent(
         )
     }
 
-
-
-    Box(modifier = Modifier.fillMaxSize()){
-        Anim(visible)
-
-    }
 }
 
 
@@ -243,39 +222,6 @@ fun Header() {
 
 
 
-
-
-
-}
-
-@Composable
-fun Anim(visible: Boolean){
-
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.toFloat()
-    val screenHeight = configuration.screenHeightDp.toFloat()
-
-    val animationTime = 2000
-    val animationDelayTime = 5
-
-    val arrowStartLocation = Offset(screenWidth.div(2), screenHeight.div(2))
-    val arrowEndLocation = Offset(screenWidth, -screenHeight)
-
-    val arrowLocation by animateOffsetAsState(
-        targetValue = if (visible) arrowEndLocation else arrowStartLocation,
-        animationSpec = tween(animationTime, animationDelayTime, LinearOutSlowInEasing)
-    )
-
-    val width by animateDpAsState(if (visible) 38.dp else 79.dp)
-    val height by animateDpAsState(if (visible) 41.dp else 88.dp)
-
-        Image(
-            painterResource(R.drawable.logo),
-            contentDescription = "Bazaar Logo",
-            modifier = Modifier
-                .size(width, height)
-                .offset(arrowLocation.x.dp, arrowLocation.y.dp)
-        )
 
 
 

@@ -11,6 +11,7 @@ fun NavGraphBuilder.upcomingMovies(
     onLoading: (Boolean) -> Unit,
     onGlitch: (Boolean) -> Unit,
     isRetry: Boolean,
+    title: (String) -> Unit
 ) {
     composable(
         route = Destinations.UpcomingMoviesScreen.route
@@ -21,7 +22,8 @@ fun NavGraphBuilder.upcomingMovies(
             },
             onLoading = onLoading,
             onGlitch = onGlitch,
-            isRetry = isRetry
+            isRetry = isRetry,
+            title = title
         )
     }
 }
