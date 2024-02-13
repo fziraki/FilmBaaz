@@ -1,7 +1,5 @@
 package com.example.filmbaaz.presentation.upcomingList
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -9,6 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.cachedIn
 import com.example.filmbaaz.R
+import com.example.filmbaaz.base.BaseState
+import com.example.filmbaaz.base.BaseViewModel
 import com.example.filmbaaz.data.repository.UpcomingMoviesSource
 import com.example.filmbaaz.domain.model.Movie
 import com.example.filmbaaz.domain.use_case.GetUpcomingMoviesUseCase
@@ -26,31 +26,40 @@ import javax.inject.Inject
 class UpcomingMoviesViewModel @Inject constructor(
     getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase,
     private val errorHandler: ErrorHandler
-): ViewModel(){
+): BaseViewModel<BaseState>(){
 
     private val _snackBarMessage = MutableSharedFlow<UiText>()
     val snackBarMessage: SharedFlow<UiText> = _snackBarMessage
 
-    private val _glitchError = MutableSharedFlow<Boolean>()
-    val glitchError: SharedFlow<Boolean> = _glitchError
+    fun onUiEvent(event: BaseState) {
+        when(event){
 
-    fun translateError(it: Throwable) {
+            is BaseState.OnError -> {
 
-        Log.d("tagg","Throwable ${it.message}")
+                if (errorHandler.getError(event.throwable) == ErrorEntity.NoConnection){
+                    sendEventSync(event)
+                }else{
+                    translateError(event.throwable)
+                }
+            }
+            else -> {
+                sendEventSync(event)
+            }
+        }
+    }
+
+
+
+    private fun translateError(it: Throwable) {
 
         val message = when(errorHandler.getError(it)){
             ErrorEntity.BadRequest -> UiText.StringResource(resId = R.string.bad_request)
             ErrorEntity.Forbidden -> UiText.StringResource(resId = R.string.forbidden)
             ErrorEntity.HTTP_401 -> UiText.StringResource(resId = R.string.unauthorized)
-            ErrorEntity.NoConnection -> {
-                viewModelScope.launch {
-                    _glitchError.emit(true)
-                }
-                UiText.StringResource(resId = R.string.no_connection)
-            }
             ErrorEntity.NotFound -> UiText.StringResource(resId = R.string.not_found)
             ErrorEntity.ServiceUnavailable -> UiText.StringResource(resId = R.string.service_unavailable)
             ErrorEntity.Unknown -> UiText.StringResource(resId = R.string.unknown)
+            else -> {UiText.DynamicString("")}
         }
 
         viewModelScope.launch {
@@ -76,5 +85,7 @@ class UpcomingMoviesViewModel @Inject constructor(
     fun invalidateSource() {
         pagingSource.invalidate()
     }
+
+
 
 }

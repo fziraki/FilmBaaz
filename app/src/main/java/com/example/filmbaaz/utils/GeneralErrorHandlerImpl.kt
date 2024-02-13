@@ -12,9 +12,11 @@ class GeneralErrorHandlerImpl : ErrorHandler {
             is HttpException -> {
                 when(throwable.code()) {
 
+                    in 500..503 -> ErrorEntity.ServiceUnavailable
+
                     504 -> ErrorEntity.NoConnection
 
-                    in 500..599 -> ErrorEntity.ServiceUnavailable
+                    in 505..599 -> ErrorEntity.ServiceUnavailable
 
                     HttpURLConnection.HTTP_BAD_REQUEST -> ErrorEntity.BadRequest
 
