@@ -1,5 +1,3 @@
-import io.netty.util.internal.UnstableApi
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -83,6 +81,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
 
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.6")

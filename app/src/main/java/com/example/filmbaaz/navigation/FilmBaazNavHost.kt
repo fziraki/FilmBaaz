@@ -6,13 +6,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.example.filmbaaz.base.BaseState
 import com.example.filmbaaz.navigation.graph.upcomingMovies
 
 @Composable
-fun NetroNavHost(
+fun FilmBaazNavHost(
     navController: NavHostController,
     startDestination: String,
-    modifier: Modifier
+    modifier: Modifier,
+    title: (String) -> Unit,
+    onState: (BaseState) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -24,7 +27,7 @@ fun NetroNavHost(
         popExitTransition = { ExitTransition.None },
     ) {
 
-        upcomingMovies(navController)
+        upcomingMovies(navController, title, onState)
 
     }
 }
